@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SILHOUETTE Coach</title>
+  <style>
+    :root {
+      --bg: #f8f5fc;
+      --card: #ffffff;
+      --text: #1f172a;
+      --muted: #64748b;
+      --primary: #6d28d9;
+      --primary-dark: #5b21b6;
+      --primary-soft: #ede9fe;
+      --border: #e2e8f0;
+      --success: #059669;
+      --danger: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 84px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4c1d95, #7c3aed);
+      color: #fff;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 2px 10px rgba(76, 29, 149, 0.2);
+    }
+
+    header h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    header small {
+      display: block;
+      font-size: 0.78rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .card h2, .card h3 {
+      margin-bottom: 10px;
+      color: #3b0764;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      margin-top: 10px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: #fff;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+    }
+
+    button.secondary {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+
+    button.secondary:hover {
+      background: #ddd6fe;
+    }
+
+    button.danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    button.danger:hover {
+      background: #fecaca;
+    }
+
+    button.small {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+.badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+
+    .badge.ok {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .day-block {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      background: #faf8ff;
+    }
+
+    .exercise-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .media-preview {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0f172a;
+    }
+
+    .media-preview img {
+      display: block;
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+    }
+
+    .media-preview iframe,
+    .media-preview video {
+      display: block;
+      width: 100%;
+      height: 240px;
+      border: none;
+    }
+
+    .sets-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .set-chip {
+      border: 1px solid var(--primary);
+      background: #fff;
+      color: var(--primary);
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .set-chip.done {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    .timer-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1e1b4b;
+      color: #fff;
+      padding: 10px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      z-index: 30;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .timer-display {
+      font-size: 1.15rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>SILHOUETTE Coach</h1>
+      <small id="syncStatus">Conectando a la nube...</small>
+    </div>
+    <button id="logoutBtn" class="small secondary hidden" onclick="logout()">Salir</button>
+  </header>
+
+  <div class="container">
+    <div id="loginView" class="card">
+      <h2>Iniciar sesión</h2>
+      <p class="muted">Ingresa como <strong>Entrenadora</strong> con tu PIN o como <strong>Alumna</strong> con tu usuario y PIN.</p>
+
+      <div class="tabs" style="margin-top: 14px;">
+        <button id="tabStudent" class="tab-btn active" onclick="switchLoginTab('student')">Soy Alumna</button>
+        <button id="tabCoach" class="tab-btn" onclick="switchLoginTab('coach')">Soy Entrenadora</button>
+      </div>
+
+      <div id="studentLoginForm">
+        <label for="studentUsername">Usuario</label>
+        <input id="studentUsername" type="text" placeholder="Ej. camila01" autocomplete="username" />
+
+        <label for="studentPin">PIN de acceso</label>
+        <input id="studentPin" type="password" inputmode="numeric" maxlength="6" placeholder="Ej. 1111" />
+
+        <div class="row" style="margin-top: 14px;">
+          <button onclick="loginStudent()">Entrar a mi rutina</button>
+        </div>
+        <p class="muted" style="margin-top: 10px;">Prueba inicial: usuario <strong>camila01</strong> / PIN <strong>1111</strong>.</p>
+      </div>
+
+      <div id="coachLoginForm" class="hidden">
+        <label for="coachPin">PIN de Entrenadora</label>
+        <input id="coachPin" type="password" inputmode="numeric" maxlength="8" placeholder="PIN inicial: 1234" />
+
+        <div class="row" style="margin-top: 14px;">
+          <button onclick="loginCoach()">Abrir panel de Coach</button>
+        </div>
+      </div>
+
+      <div id="loginError" class="error-msg"></div>
+    </div>
+
+    <div id="studentView" class="hidden">
+      <div class="card">
+        <div class="row" style="justify-content: space-between;">
+          <div>
+            <h2 id="studentGreeting">Hola</h2>
+            <p id="studentGoal" class="muted"></p>
+          </div>
+          <span class="badge ok">Sincronizado</span>
+        </div>
+      </div>
+      <div id="studentRoutineContainer"></div>
+    </div>
+
+    <div id="coachView" class="hidden">
+      <div class="tabs">
+        <button id="coachTabStudents" class="tab-btn active" onclick="switchCoachTab('students')">Alumnas y Rutinas</button>
+        <button id="coachTabLibrary" class="tab-btn" onclick="switchCoachTab('library')">Biblioteca de Ejercicios</button>
+      </div>
+
+      <div id="coachStudentsPanel">
+        <div class="card
+<h3>Nueva alumna</h3>
+        <div class="grid-2">
+          <div>
+            <label for="newStudentName">Nombre completo</label>
+            <input id="newStudentName" type="text" placeholder="Ej. Camila López" />
+          </div>
+          <div>
+            <label for="newStudentUser">Usuario</label>
+            <input id="newStudentUser" type="text" placeholder="Ej. camila02" />
+          </div>
+          <div>
+            <label for="newStudentPin">PIN (4 a 6 dígitos)</label>
+            <input id="newStudentPin" type="text" inputmode="numeric" maxlength="6" placeholder="Ej. 2222" />
+          </div>
+          <div>
+            <label for="newStudentGoal">Objetivo o enfoque</label>
+            <input id="newStudentGoal" type="text" placeholder="Ej. Fuerza de tren inferior y glúteo" />
+          </div>
+        </div>
+        <div class="row" style="margin-top: 14px;">
+          <button onclick="addStudent()">Guardar alumna</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Asignar y editar rutina</h3>
+        <label for="coachStudentSelect">Seleccionar alumna</label>
+        <select id="coachStudentSelect" onchange="renderCoachSelectedStudent()"></select>
+
+        <div id="coachSelectedStudentBox" style="margin-top: 14px;"></div>
+      </div>
+    </div>
+
+    <div id="coachLibraryPanel" class="hidden">
+      <div class="card">
+        <h3>Nuevo ejercicio en biblioteca</h3>
+        <div class="grid-2">
+          <div>
+            <label for="libName">Nombre del ejercicio</label>
+            <input id="libName" type="text" placeholder="Ej. Hip thrust con barra" />
+          </div>
+          <div>
+            <label for="libGroup">Grupo muscular / enfoque</label>
+            <input id="libGroup" type="text" placeholder="Ej. Glúteo / Femoral" />
+          </div>
+        </div>
+
+        <label for="libMediaUrl">URL de imagen, GIF, video o YouTube (opcional)</label>
+        <input id="libMediaUrl" type="url" placeholder="https://..." />
+
+        <label for="libNotes">Notas técnicas / ejecución</label>
+        <textarea id="libNotes" placeholder="Ej. Pausa de 1 segundo arriba, mentón ligeramente al pecho..."></textarea>
+
+        <div class="row" style="margin-top: 14px;">
+          <button onclick="addExerciseToLibrary()">Agregar a biblioteca</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Ejercicios guardados</h3>
+        <div id="libraryListContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="timer-bar">
+    <div>
+      <span class="muted" style="color: #c4b5fd; display: block; font-size: 0.72rem;">Cronómetro de descanso</span>
+      <span id="timerDisplay" class="timer-display">01:30</span>
+    </div>
+    <div class="row">
+      <button class="small secondary" onclick="setRestTimer(45)">45s</button>
+      <button class="small secondary" onclick="setRestTimer(90)">90s</button>
+      <button class="small secondary" onclick="setRestTimer(120)">120s</button>
+      <button class="small" id="timerToggleBtn" onclick="toggleRestTimer()">Iniciar</button>
+      <button class="small danger" onclick="resetRestTimer()">Reiniciar</button>
+    </div>
+  </div>
+<script>
+    // =========================================================================
+    // 1. CONFIGURACIÓN DE NUBE (LISTA PARA ENLAZAR) + RESPALDO LOCAL
+    // =========================================================================
+    const STORAGE_KEY = "silhouette_coach_state_v1";
+    const SESSION_KEY = "silhouette_coach_session_v1";
+
+    // Coloca aquí tu endpoint de nube cuando lo tengas listo (ej. Google Apps Script / Firebase / REST)
+    const CLOUD_CONFIG = {
+      enabled: false, // Cambiar a true cuando conectes tu URL en la nube
+      endpointUrl: "", // Ej. "https://script.google.com/macros/s/.../exec"
+      apiKey: "",
+      syncIntervalMs: 12000 // Revisa cambios cada 12 segundos cuando está en línea
+    };
+
+    const DEFAULT_STATE = {
+      coachPin: "1234",
+      updatedAt: Date.now(),
+      library: [
+        {
+          id: "ex-hip-thrust",
+          name: "Hip Thrust con barra o mancuerna",
+          group: "Glúteo / Femoral",
+          mediaUrl: "",
+          notes: "Apoya escápulas en banca, sube extendiendo cadera sin hiperextender lumbar y pausa 1 seg arriba."
+        },
+        {
+          id: "ex-sentadilla-bulgara",
+          name: "Sentadilla búlgara",
+          group: "Cuádriceps / Glúteo",
+          mediaUrl: "",
+          notes: "Torso ligeramente inclinado hacia adelante, rodilla alineada con la punta del pie."
+        },
+        {
+          id: "ex-remo-mancuerna",
+          name: "Remo con mancuerna a un brazo",
+          group: "Espalda / Core",
+          mediaUrl: "",
+          notes: "Mantén el tronco firme y lleva el codo hacia la cadera controlando la bajada."
+        }
+      ],
+      students: [
+        {
+          id: "stu-camila01",
+          name: "Camila Ramírez",
+          username: "camila01",
+          pin: "1111",
+          goal: "Fuerza de tren inferior y constancia semanal",
+          days: [
+            {
+              id: "day-1",
+              title: "Día 1 — Tren Inferior (Énfasis Glúteo)",
+              exercises: [
+                {
+                  uid: "assign-1",
+                  exerciseId: "ex-hip-thrust",
+                  sets: 4,
+                  reps: "10-12",
+                  restSec: 90,
+                  completedSets: [false, false, false, false]
+                },
+                {
+                  uid: "assign-2",
+                  exerciseId: "ex-sentadilla-bulgara",
+                  sets: 3,
+                  reps: "10 por pierna",
+                  restSec: 90,
+                  completedSets: [false, false, false]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    let appState = loadLocalState();
+    let currentSession = loadSession();
+    let selectedCoachStudentId = appState.students[0]?.id || "";
+    let syncTimerId = null;
+
+    // Estado del cronómetro de descanso
+    let timerDurationSec = 90;
+    let timerRemainingSec = 90;
+    let timerIntervalId = null;
+    let timerRunning = false;
+
+    function loadLocalState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_STATE));
+          return structuredClone(DEFAULT_STATE);
+        }
+        const parsed = JSON.parse(raw);
+        return {
+          ...structuredClone(DEFAULT_STATE),
+          ...parsed,
+          library: Array.isArray(parsed.library) ? parsed.library : structuredClone(DEFAULT_STATE.library),
+          students: Array.isArray(parsed.students) ? parsed.students : structuredClone(DEFAULT_STATE.students)
+        };
+      } catch (err) {
+        console.error("Error leyendo respaldo local:", err);
+        return structuredClone(DEFAULT_STATE);
+      }
+    }
+
+    function saveLocalState(markUpdated = true) {
+      if (markUpdated) {
+        appState.updatedAt = Date.now();
+      }
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (err) {
+        console.error("Error guardando respaldo local:", err);
+      }
+    }
+
+    function saveStateAndSync(statusText = "Guardado local y listo") {
+      saveLocalState(true);
+      setSyncStatus(statusText);
+      if (CLOUD_CONFIG.enabled && CLOUD_CONFIG.endpointUrl) {
+        pushToCloud();
+      }
+    }
+
+    function setSyncStatus(text) {
+      const el = document.getElementById("syncStatus");
+      if (el) el.textContent = text;
+    }
+
+    // =========================================================================
+    // 2. CONECTOR NUBE (LISTO PARA ENLAZAR TU API / BASE DE DATOS)
+    // =========================================================================
+    async function pushToCloud() {
+      if (!CLOUD_CONFIG.enabled || !CLOUD_CONFIG.endpointUrl) return;
+      try {
+        setSyncStatus("Sincronizando cambios a la nube...");
+        const res = await fetch(CLOUD_CONFIG.endpointUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(CLOUD_CONFIG.apiKey ? { "x-api-key": CLOUD_CONFIG.apiKey } : {})
+          },
+          body: JSON.stringify({ action: "saveState", payload: appState })
+        });
+        if (!res.ok) throw new Error("Respuesta HTTP " + res.status);
+        setSyncStatus("Nube sincronizada · " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+      } catch (err) {
+        console.warn("No se pudo subir a la nube; queda respaldado localmente:", err);
+        setSyncStatus("Respaldo local activo (sin conexión nube)");
+      }
+    }
+
+    async function pullFromCloud() {
+      if (!CLOUD_CONFIG.enabled || !CLOUD_CONFIG.endpointUrl) {
+        setSyncStatus("Modo local activo · Listo para enlazar nube");
+        return;
+      }
+      try {
+        const separator = CLOUD_CONFIG.endpointUrl.includes("?") ? "&" : "?";
+        const url = `${CLOUD_CONFIG.endpointUrl}${separator}action=getState&_t=${Date.now()}`;
+        const res = await fetch(url, {
+          headers: CLOUD_CONFIG.apiKey ? { "x-api-key": CLOUD_CONFIG.apiKey } : {}
+        });
+        if (!res.ok) throw new Error("Respuesta HTTP " + res.status);
+        const data = await res.json();
+        const remoteState = data?.payload || data;
+
+        if (remoteState && typeof remoteState.updatedAt === "number" && remoteState.updatedAt > (appState.updatedAt || 0)) {
+          appState = {
+            ...structuredClone(DEFAULT_STATE),
+            ...remoteState
+          };
+          saveLocalState(false);
+          refreshActiveViews();
+        }
+        setSyncStatus("En línea · Actualizado " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+      } catch (err) {
+        console.warn("Error al consultar nube:", err);
+        setSyncStatus("Respaldo local activo");
+      }
+    }
+
+    function startCloudPolling() {
+      if (syncTimerId) clearInterval(syncTimerId);
+      pullFromCloud();
+      if (CLOUD_CONFIG.enabled && CLOUD_CONFIG.endpointUrl) {
+        syncTimerId = setInterval(pullFromCloud, CLOUD_CONFIG.syncIntervalMs);
+      }
+    }
+
+    // =========================================================================
+    // 3. SESIÓN Y AUTENTICACIÓN (ENTRENADORA Y ALUMNA)
+    // =========================================================================
+    function loadSession() {
+      try {
+        const raw = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function persistSession(sessionObj) {
+      currentSession = sessionObj;
+      if (sessionObj) {
+        localStorage.setItem(SESSION_KEY, JSON.stringify(sessionObj));
+      } else {
+        localStorage.removeItem(SESSION_KEY);
+      }
+    }
+
+    function switchLoginTab(tab) {
+      const isStudent = tab === "student";
+      document.getElementById("tabStudent").classList.toggle("active", isStudent);
+      document.getElementById("tabCoach").classList.toggle("active", !isStudent);
+      document.getElementById("studentLoginForm").classList.toggle("hidden", !isStudent);
+      document.getElementById("coachLoginForm").classList.toggle("hidden", isStudent);
+      document.getElementById("loginError").textContent = "";
+    }
+
+    function loginStudent() {
+      const username = (document.getElementById("studentUsername").value || "").trim().toLowerCase();
+      const pin = (document.getElementById("studentPin").value || "").trim();
+      const errEl = document.getElementById("loginError");
+
+      const student = appState.students.find(
+        (s) => s.username.toLowerCase() === username && String(s.pin) === pin
+      );
+
+      if (!student) {
+        errEl.textContent = "Usuario o PIN incorrecto. Verifica tus datos con tu entrenadora.";
+        return;
+      }
+
+      errEl.textContent = "";
+      persistSession({ role: "student", studentId: student.id });
+      renderApp();
+    }
+
+    function loginCoach() {
+      const pin = (document.getElementById("coachPin").value || "").trim();
+      const errEl = document.getElementById("loginError");
+
+      if (pin !== String(appState.coachPin)) {
+        errEl.textContent = "PIN de entrenadora incorrecto.";
+        return;
+      }
+
+      errEl.textContent = "";
+      persistSession({ role: "coach" });
+      renderApp();
+    }
+
+    function logout() {
+      persistSession(null);
+      document.getElementById("studentPin").value = "";
+      document.getElementById("coachPin").value = "";
+      renderApp();
+    }
+
+    // =========================================================================
+    // 4. NAVEGACIÓN DE VISTAS
+    // =========================================================================
+    function renderApp() {
+      const loginView = document.getElementById("loginView");
+      const studentView = document.getElementById("studentView");
+      const coachView = document.getElementById("coachView");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      loginView.classList.add("hidden");
+      studentView.classList.add("hidden");
+      coachView.classList.add("hidden");
+      logoutBtn.classList.add("hidden");
+
+      if (!currentSession) {
+        loginView.classList.remove("hidden");
+        return;
+      }
+
+      logoutBtn.classList.remove("hidden");
+
+      if (currentSession.role === "student") {
+        studentView.classList.remove("hidden");
+        renderStudentView();
+      } else if (currentSession.role === "coach") {
+        coachView.classList.remove("hidden");
+        renderCoachView();
+      }
+    }
+
+    function refreshActiveViews() {
+      if (!currentSession) return;
+      if (currentSession.role === "student") renderStudentView();
+      if (currentSession.role === "coach") renderCoachView();
+    }
+
+    function switchCoachTab(tab) {
+      const isStudents = tab === "students";
+      document.getElementById("coachTabStudents").classList.toggle("active", isStudents);
+      document.getElementById("coachTabLibrary").classList.toggle("active", !isStudents);
+      document.getElementById("coachStudentsPanel").classList.toggle("hidden", !isStudents);
+      document.getElementById("coachLibraryPanel").classList.toggle("hidden", isStudents);
+
+      if (!isStudents) {
+        renderLibraryList();
+      } else {
+        renderCoachStudentsSelect();
+        renderCoachSelectedStudent();
+      }
+    }
+
+    // =========================================================================
+    // 5. VISTA DE ALUMNA (CELULAR)
+    // =========================================================================
+    function renderStudentView() {
+      const student = appState.students.find((s) => s.id === currentSession?.studentId);
+      const container = document.getElementById("studentRoutineContainer");
+
+      if (!student) {
+        container.innerHTML = `<div class="card"><p class="muted">No se encontró tu perfil activo. Vuelve a iniciar sesión.</p></div>`;
+        return;
+      }
+
+      document.getElementById("studentGreeting").textContent = `¡Hola, ${student.name}!`;
+      document.getElementById("studentGoal").textContent = student.goal || "Rutina personalizada SILHOUETTE";
+
+      if (!student.days || student.days.length === 0) {
+        container.innerHTML = `<div class="card"><p class="muted">Aún no tienes días de rutina asignados. Tu entrenadora actualizará tu plan pronto.</p></div>`;
+        return;
+      }
+
+      container.innerHTML = student.days.map((day, dayIdx) => {
+        const exercisesHtml = (day.exercises || []).map((item, exIdx) => {
+          const libEx = appState.library.find((e) => e.id === item.exerciseId) || {
+            name: item.customName || "Ejercicio",
+            group: item.customGroup || "",
+            mediaUrl: item.customMediaUrl || "",
+            notes: item.customNotes || ""
+          };
+
+          const setsCount = Math.max(1, Number(item.sets) || 3);
+          const completedArr = Array.from({ length: setsCount }, (_, i) => Boolean(item.completedSets?.[i]));
+
+          const setChipsHtml = completedArr.map((done, sIdx) => `
+            <button
+              type="button"
+              class="set-chip ${done ? "done" : ""}"
+              onclick="toggleStudentSet('${student.id}', ${dayIdx}, ${exIdx}, ${sIdx}, ${Number(item.restSec) || 90})"
+            >
+              ${done ? "✓ " : ""}Serie ${sIdx + 1}
+            </button>
+          `).join("");
+
+          return `
+            <div class="exercise-item">
+              <div class="row" style="justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <strong>${escapeHtml(libEx.name)}</strong>
+                  ${libEx.group ? `<span class="badge" style="margin-left: 6px;">${escapeHtml(libEx.group)}</span>` : ""}
+                </div>
+                <span class="muted">${setsCount} series × ${escapeHtml(String(item.reps || "10-12"))}</span>
+              </div>
+
+              ${libEx.notes ? `<p class="muted" style="margin-top: 6px;">${escapeHtml(libEx.notes)}</p>` : ""}
+              ${renderMediaPreview(libEx.mediaUrl)}
+
+              <div class="sets-row">
+                ${setChipsHtml}
+              </div>
+              <p class="muted" style="margin-top: 8px; font-size: 0.78rem;">
+                Descanso sugerido: ${Number(item.restSec) || 90} seg (toca una serie para marcarla y preparar descanso).
+              </p>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          <div class="card">
+            <div class="day-block" style="margin-top: 0;">
+              <h3>${escapeHtml(day.title || `Día ${dayIdx + 1}`)}</h3>
+              ${exercisesHtml || `<p class="muted" style="margin-top: 8px;">Sin ejercicios en este día todavía.</p>`}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function toggleStudentSet(studentId, dayIdx, exIdx, setIdx, restSec) {
+      const student = appState.students.find((s) => s.id === studentId);
+      if (!student) return;
+      const ex = student.days?.[dayIdx]?.exercises?.[exIdx];
+      if (!ex) return;
+
+      const setsCount = Math.max(1, Number(ex.sets) || 3);
+      if (!Array.isArray(ex.completedSets) || ex.completedSets.length !== setsCount) {
+        ex.completedSets = Array.from({ length: setsCount }, (_, i) => Boolean(ex.completedSets?.[i]));
+      }
+
+      const nextState = !ex.completedSets[setIdx];
+      ex.completedSets[setIdx] = nextState;
+
+      saveStateAndSync(nextState ? "Serie registrada" : "Serie desmarcada");
+      renderStudentView();
+
+      if (nextState && restSec > 0) {
+        setRestTimer(restSec);
+        startRestTimer();
+      }
+    }
+
+    // =========================================================================
+    // 6. PANEL DE ENTRENADORA (ALUMNAS, DÍAS Y RUTINAS)
+    // =========================================================================
+    function renderCoachView() {
+      renderCoachStudentsSelect();
+      renderCoachSelectedStudent();
+      renderLibraryList();
+    }
+
+    function addStudent() {
+      const name = (document.getElementById("newStudentName").value || "").trim();
+      const username = (document.getElementById("newStudentUser").value || "").trim().toLowerCase();
+      const pin = (document.getElementById("newStudentPin").value || "").trim();
+      const goal = (document.getElementById("newStudentGoal").value || "").trim();
+
+      if (!name || !username || !pin) {
+        alert("Completa al menos nombre, usuario y PIN para registrar a la alumna.");
+        return;
+      }
+
+      if (appState.students.some((s) => s.username.toLowerCase() === username)) {
+        alert("Ese nombre de usuario ya existe. Elige otro.");
+        return;
+      }
+
+      const newStudent = {
+        id: "stu-" + Date.now(),
+        name,
+        username,
+        pin,
+        goal: goal || "Entrenamiento personalizado",
+        days: []
+      };
+
+      appState.students.push(newStudent);
+      selectedCoachStudentId = newStudent.id;
+      saveStateAndSync("Alumna agregada");
+
+      document.getElementById("newStudentName").value = "";
+      document.getElementById("newStudentUser").value = "";
+      document.getElementById("newStudentPin").value = "";
+      document.getElementById("newStudentGoal").value = "";
+
+      renderCoachStudentsSelect();
+      renderCoachSelectedStudent();
+    }
+
+    function renderCoachStudentsSelect() {
+      const select = document.getElementById("coachStudentSelect");
+      if (!select) return;
+
+      if (appState.students.length === 0) {
+        select.innerHTML = `<option value="">Sin alumnas registradas</option>`;
+        selectedCoachStudentId = "";
+        return;
+      }
+
+      if (!appState.students.some((s) => s.id === selectedCoachStudentId)) {
+        selectedCoachStudentId = appState.students[0].id;
+      }
+
+      select.innerHTML = appState.students.map((s) => `
+        <option value="${s.id}" ${s.id === selectedCoachStudentId ? "selected" : ""}>
+          ${escapeHtml(s.name)} (@${escapeHtml(s.username)} · PIN ${escapeHtml(String(s.pin))})
+        </option>
+      `).join("");
+    }
+
+    function renderCoachSelectedStudent() {
+      const select = document.getElementById("coachStudentSelect");
+      const box = document.getElementById("coachSelectedStudentBox");
+      if (!select || !box) return;
+
+      selectedCoachStudentId = select.value;
+      const student = appState.students.find((s) => s.id === selectedCoachStudentId);
+
+      if (!student) {
+        box.innerHTML = `<p class="muted">Agrega una alumna arriba para comenzar a armar su rutina.</p>`;
+        return;
+      }
+
+      const libOptionsHtml = appState.library.map((ex) => `
+        <option value="${ex.id}">${escapeHtml(ex.name)}${ex.group ? ` (${escapeHtml(ex.group)})` : ""}</option>
+      `).join("");
+
+      const daysHtml = (student.days || []).map((day, dayIdx) => {
+        const exRowsHtml = (day.exercises || []).map((item, exIdx) => {
+          const libEx = appState.library.find((e) => e.id === item.exerciseId);
+          return `
+            <div class="exercise-item">
+              <div class="row" style="justify-content: space-between;">
+                <div>
+                  <strong>${escapeHtml(libEx ? libEx.name : "Ejercicio")}</strong>
+                  <div class="muted" style="font-size: 0.82rem;">
+                    ${Number(item.sets) || 3} series · ${escapeHtml(String(item.reps || "10-12"))} reps · Descanso ${Number(item.restSec) || 90}s
+                  </div>
+                </div>
+                <button type="button" class="small danger" onclick="removeExerciseFromDay('${student.id}', ${dayIdx}, ${exIdx})">Quitar</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          <div class="day-block">
+            <div class="row" style="justify-content: space-between;">
+              <h4>${escapeHtml(day.title || `Día ${dayIdx + 1}`)}</h4>
+              <button type="button" class="small danger" onclick="removeDayFromStudent('${student.id}', ${dayIdx})">Eliminar día</button>
+            </div>
+
+            ${exRowsHtml || `<p class="muted" style="margin-top: 8px;">Aún no hay ejercicios asignados a este día.</p>`}
+
+            <div class="grid-2" style="margin-top: 12px;">
+              <div>
+                <label>Ejercicio de biblioteca</label>
+                <select id="assign-ex-${dayIdx}">
+                  ${libOptionsHtml || `<option value="">Agrega ejercicios en Biblioteca primero</option>`}
+                </select>
+              </div>
+              <div>
+                <label>Series</label>
+                <input id="assign-sets-${dayIdx}" type="number" min="1" max="12" value="3" />
+              </div>
+              <div>
+                <label>Repeticiones / tiempo</label>
+                <input id="assign-reps-${dayIdx}" type="text" value="10-12" placeholder="Ej. 12 o 30 seg" />
+              </div>
+              <div>
+                <label>Descanso (seg)</label>
+                <input id="assign-rest-${dayIdx}" type="number" min="10" max="600" step="5" value="90" />
+              </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+              <button type="button" class="small secondary" onclick="addExerciseToDay('${student.id}', ${dayIdx})">+ Asignar ejercicio al día</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      box.innerHTML = `
+        <div class="card" style="background: #faf8ff; margin-bottom: 12px;">
+          <div class="row" style="justify-content: space-between;">
+            <div>
+              <strong>${escapeHtml(student.name)}</strong>
+              <span class="badge" style="margin-left: 6px;">Usuario: ${escapeHtml(student.username)}</span>
+              <span class="badge" style="margin-left: 4px;">PIN: ${escapeHtml(String(student.pin))}</span>
+            </div>
+            <button type="button" class="small danger" onclick="deleteStudent('${student.id}')">Eliminar alumna</button>
+          </div>
+          <label for="editStudentGoal">Objetivo actual</label>
+          <div class="row">
+            <input id="editStudentGoal" type="text" value="${escapeAttr(student.goal || "")}" style="flex: 1;" />
+            <button type="button" class="small" onclick="updateStudentGoal('${student.id}')">Guardar objetivo</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <input id="newDayTitle" type="text" placeholder="Ej. Día 2 — Torso y Core" style="flex: 1; min-width: 200px;" />
+          <button type="button" onclick="addDayToStudent('${student.id}')">+ Agregar día de rutina</button>
+        </div>
+
+        ${daysHtml}
+      `;
+    }
+
+    function updateStudentGoal(studentId) {
+      const student = appState.students.find((s) => s.id === studentId);
+      if (!student) return;
+      student.goal = (document.getElementById("editStudentGoal").value || "").trim();
+      saveStateAndSync("Objetivo actualizado");
+      renderCoachSelectedStudent();
+    }
+
+    function deleteStudent(studentId) {
+      if (!confirm("¿Eliminar esta alumna y su rutina asignada?")) return;
+      appState.students = appState.students.filter((s) => s.id !== studentId);
+      if (selectedCoachStudentId === studentId) {
+        selectedCoachStudentId = appState.students[0]?.id || "";
+      }
+      saveStateAndSync("Alumna eliminada");
+      renderCoachStudentsSelect();
+      renderCoachSelectedStudent();
+    }
+
+    function addDayToStudent(studentId) {
+      const student = appState.students.find((s) => s.id === studentId);
+      if (!student) return;
+      const input = document.getElementById("newDayTitle");
+      const title = (input.value || "").trim() || `Día ${(student.days?.length || 0) + 1}`;
+      student.days = student.days || [];
+      student.days.push({
+        id: "day-" + Date.now(),
+        title,
+        exercises: []
+      });
+      saveStateAndSync("Día agregado");
+      renderCoachSelectedStudent();
+    }
+
+    function removeDayFromStudent(studentId, dayIdx) {
+      const student = appState.students.find((s) => s.id === studentId);
+      if (!student || !student.days?.[dayIdx]) return;
+      student.days.splice(dayIdx, 1);
+      saveStateAndSync("Día eliminado");
+      renderCoachSelectedStudent();
+    }
+
+    function addExerciseToDay(studentId, dayIdx) {
+      const student = appState.students.find((s) => s.id === studentId);
+      const day = student?.days?.[dayIdx];
+      if (!day) return;
+
+      const exerciseId = document.getElementById(`assign-ex-${dayIdx}`).value;
+      const sets = Math.max(1, Number(document.getElementById(`assign-sets-${dayIdx}`).value) || 3);
+      const reps = (document.getElementById(`assign-reps-${dayIdx}`).value || "10-12").trim();
+      const restSec = Math.max(10, Number(document.getElementById(`assign-rest-${dayIdx}`).value) || 90);
+
+      if (!exerciseId) {
+        alert("Selecciona o crea primero un ejercicio en la Biblioteca.");
+        return;
+      }
+
+      day.exercises = day.exercises || [];
+      day.exercises.push({
+        uid: "assign-" + Date.now(),
+        exerciseId,
+        sets,
+        reps,
+        restSec,
+        completedSets: Array.from({ length: sets }, () => false)
+      });
+
+      saveStateAndSync("Ejercicio asignado");
+      renderCoachSelectedStudent();
+    }
+
+    function removeExerciseFromDay(studentId, dayIdx, exIdx) {
+      const student = appState.students.find((s) => s.id === studentId);
+      const day = student?.days?.[dayIdx];
+      if (!day?.exercises?.[exIdx]) return;
+      day.exercises.splice(exIdx, 1);
+      saveStateAndSync("Ejercicio retirado");
+      renderCoachSelectedStudent();
+    }
+
+    // =========================================================================
+    // 7. BIBLIOTECA DE EJERCICIOS Y MULTIMEDIA
+    // =========================================================================
+    function addExerciseToLibrary() {
+      const name = (document.getElementById("libName").value || "").trim();
+      const group = (document.getElementById("libGroup").value || "").trim();
+      const mediaUrl = (document.getElementById("libMediaUrl").value || "").trim();
+      const notes = (document.getElementById("libNotes").value || "").trim();
+
+      if (!name) {
+        alert("Escribe el nombre del ejercicio.");
+        return;
+      }
+
+      appState.library.unshift({
+        id: "ex-" + Date.now(),
+        name,
+        group,
+        mediaUrl,
+        notes
+      });
+
+      saveStateAndSync("Ejercicio guardado en biblioteca");
+
+      document.getElementById("libName").value = "";
+      document.getElementById("libGroup").value = "";
+      document.getElementById("libMediaUrl").value = "";
+      document.getElementById("libNotes").value = "";
+
+      renderLibraryList();
+      renderCoachSelectedStudent();
+    }
+
+    function deleteExerciseFromLibrary(exerciseId) {
+      if (!confirm("¿Quitar este ejercicio de la biblioteca?")) return;
+      appState.library = appState.library.filter((e) => e.id !== exerciseId);
+      saveStateAndSync("Ejercicio eliminado de biblioteca");
+      renderLibraryList();
+      renderCoachSelectedStudent();
+    }
+
+    function renderLibraryList() {
+      const container = document.getElementById("libraryListContainer");
+      if (!container) return;
+
+      if (!appState.library.length) {
+        container.innerHTML = `<p class="muted">No hay ejercicios en la biblioteca todavía.</p>`;
+        return;
+      }
+
+      container.innerHTML = appState.library.map((ex) => `
+        <div class="exercise-item">
+          <div class="row" style="justify-content: space-between;">
+            <div>
+              <strong>${escapeHtml(ex.name)}</strong>
+              ${ex.group ? `<span class="badge" style="margin-left: 6px;">${escapeHtml(ex.group)}</span>` : ""}
+            </div>
+            <button type="button" class="small danger" onclick="deleteExerciseFromLibrary('${ex.id}')">Eliminar</button>
+          </div>
+          ${ex.notes ? `<p class="muted" style="margin-top: 6px;">${escapeHtml(ex.notes)}</p>` : ""}
+          ${renderMediaPreview(ex.mediaUrl)}
+        </div>
+      `).join("");
+    }
+
+    function renderMediaPreview(url) {
+      const clean = (url || "").trim();
+      if (!clean) return "";
+
+      const ytMatch = clean.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/);
+      if (ytMatch && ytMatch[1]) {
+        return `
+          <div class="media-preview">
+            <iframe src="https://www.youtube.com/embed/${ytMatch[1]}" allowfullscreen loading="lazy"></iframe>
+          </div>
+        `;
+      }
+
+      if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(clean)) {
+        return `
+          <div class="media-preview">
+            <video src="${escapeAttr(clean)}" controls playsinline preload="metadata"></video>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="media-preview">
+          <img src="${escapeAttr(clean)}" alt="Demostración del ejercicio" loading="lazy" />
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 8. CRONÓMETRO DE DESCANSO
+    // =========================================================================
+    function formatSeconds(sec) {
+      const s = Math.max(0, Number(sec) || 0);
+      const mins = String(Math.floor(s / 60)).padStart(2, "0");
+      const rem = String(s % 60).padStart(2, "0");
+      return `${mins}:${rem}`;
+    }
+
+    function updateTimerDisplay() {
+      const el = document.getElementById("timerDisplay");
+      if (el) el.textContent = formatSeconds(timerRemainingSec);
+      const btn = document.getElementById("timerToggleBtn");
+      if (btn) btn.textContent = timerRunning ? "Pausar" : "Iniciar";
+    }
+
+    function setRestTimer(seconds) {
+      pauseRestTimer();
+      timerDurationSec = Number(seconds) || 90;
+      timerRemainingSec = timerDurationSec;
+      updateTimerDisplay();
+    }
+
+    function startRestTimer() {
+      if (timerRunning) return;
+      if (timerRemainingSec <= 0) timerRemainingSec = timerDurationSec;
+      timerRunning = true;
+      updateTimerDisplay();
+
+      timerIntervalId = setInterval(() => {
+        timerRemainingSec -= 1;
+        if (timerRemainingSec <= 0) {
+          timerRemainingSec = 0;
+          pauseRestTimer();
+          if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        }
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    function pauseRestTimer() {
+      timerRunning = false;
+      if (timerIntervalId) {
+        clearInterval(timerIntervalId);
+        timerIntervalId = null;
+      }
+      updateTimerDisplay();
+    }
+
+    function toggleRestTimer() {
+      if (timerRunning) pauseRestTimer();
+      else startRestTimer();
+    }
+
+    function resetRestTimer() {
+      pauseRestTimer();
+      timerRemainingSec = timerDurationSec;
+      updateTimerDisplay();
+    }
+
+    // =========================================================================
+    // 9. UTILIDADES Y ARRANQUE
+    // =========================================================================
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function escapeAttr(str) {
+      return escapeHtml(str).replace(/'/g, "&#39;");
+    }
+
+    updateTimerDisplay();
+    renderApp();
+    startCloudPolling();
+  </script>
+</body>
+</html>
