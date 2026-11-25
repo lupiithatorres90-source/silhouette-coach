@@ -170,7 +170,8 @@
       color: #fff;
       border-color: var(--primary);
     }
-.badge {
+
+    .badge {
       display: inline-block;
       padding: 3px 9px;
       border-radius: 999px;
@@ -349,68 +350,69 @@
       </div>
 
       <div id="coachStudentsPanel">
-        <div class="card
-<h3>Nueva alumna</h3>
-        <div class="grid-2">
-          <div>
-            <label for="newStudentName">Nombre completo</label>
-            <input id="newStudentName" type="text" placeholder="Ej. Camila López" />
+        <div class="card">
+          <h3>Nueva alumna</h3>
+          <div class="grid-2">
+            <div>
+              <label for="newStudentName">Nombre completo</label>
+              <input id="newStudentName" type="text" placeholder="Ej. Camila López" />
+            </div>
+            <div>
+              <label for="newStudentUser">Usuario</label>
+              <input id="newStudentUser" type="text" placeholder="Ej. camila02" />
+            </div>
+            <div>
+              <label for="newStudentPin">PIN (4 a 6 dígitos)</label>
+              <input id="newStudentPin" type="text" inputmode="numeric" maxlength="6" placeholder="Ej. 2222" />
+            </div>
+            <div>
+              <label for="newStudentGoal">Objetivo o enfoque</label>
+              <input id="newStudentGoal" type="text" placeholder="Ej. Fuerza de tren inferior y glúteo" />
+            </div>
           </div>
-          <div>
-            <label for="newStudentUser">Usuario</label>
-            <input id="newStudentUser" type="text" placeholder="Ej. camila02" />
-          </div>
-          <div>
-            <label for="newStudentPin">PIN (4 a 6 dígitos)</label>
-            <input id="newStudentPin" type="text" inputmode="numeric" maxlength="6" placeholder="Ej. 2222" />
-          </div>
-          <div>
-            <label for="newStudentGoal">Objetivo o enfoque</label>
-            <input id="newStudentGoal" type="text" placeholder="Ej. Fuerza de tren inferior y glúteo" />
-          </div>
-        </div>
-        <div class="row" style="margin-top: 14px;">
-          <button onclick="addStudent()">Guardar alumna</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Asignar y editar rutina</h3>
-        <label for="coachStudentSelect">Seleccionar alumna</label>
-        <select id="coachStudentSelect" onchange="renderCoachSelectedStudent()"></select>
-
-        <div id="coachSelectedStudentBox" style="margin-top: 14px;"></div>
-      </div>
-    </div>
-
-    <div id="coachLibraryPanel" class="hidden">
-      <div class="card">
-        <h3>Nuevo ejercicio en biblioteca</h3>
-        <div class="grid-2">
-          <div>
-            <label for="libName">Nombre del ejercicio</label>
-            <input id="libName" type="text" placeholder="Ej. Hip thrust con barra" />
-          </div>
-          <div>
-            <label for="libGroup">Grupo muscular / enfoque</label>
-            <input id="libGroup" type="text" placeholder="Ej. Glúteo / Femoral" />
+          <div class="row" style="margin-top: 14px;">
+            <button onclick="addStudent()">Guardar alumna</button>
           </div>
         </div>
 
-        <label for="libMediaUrl">URL de imagen, GIF, video o YouTube (opcional)</label>
-        <input id="libMediaUrl" type="url" placeholder="https://..." />
+        <div class="card">
+          <h3>Asignar y editar rutina</h3>
+          <label for="coachStudentSelect">Seleccionar alumna</label>
+          <select id="coachStudentSelect" onchange="renderCoachSelectedStudent()"></select>
 
-        <label for="libNotes">Notas técnicas / ejecución</label>
-        <textarea id="libNotes" placeholder="Ej. Pausa de 1 segundo arriba, mentón ligeramente al pecho..."></textarea>
-
-        <div class="row" style="margin-top: 14px;">
-          <button onclick="addExerciseToLibrary()">Agregar a biblioteca</button>
+          <div id="coachSelectedStudentBox" style="margin-top: 14px;"></div>
         </div>
       </div>
 
-      <div class="card">
-        <h3>Ejercicios guardados</h3>
-        <div id="libraryListContainer"></div>
+      <div id="coachLibraryPanel" class="hidden">
+        <div class="card">
+          <h3>Nuevo ejercicio en biblioteca</h3>
+          <div class="grid-2">
+            <div>
+              <label for="libName">Nombre del ejercicio</label>
+              <input id="libName" type="text" placeholder="Ej. Hip thrust con barra" />
+            </div>
+            <div>
+              <label for="libGroup">Grupo muscular / enfoque</label>
+              <input id="libGroup" type="text" placeholder="Ej. Glúteo / Femoral" />
+            </div>
+          </div>
+
+          <label for="libMediaUrl">URL de imagen, GIF, video o YouTube (opcional)</label>
+          <input id="libMediaUrl" type="url" placeholder="https://..." />
+
+          <label for="libNotes">Notas técnicas / ejecución</label>
+          <textarea id="libNotes" placeholder="Ej. Pausa de 1 segundo arriba, mentón ligeramente al pecho..."></textarea>
+
+          <div class="row" style="margin-top: 14px;">
+            <button onclick="addExerciseToLibrary()">Agregar a biblioteca</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Ejercicios guardados</h3>
+          <div id="libraryListContainer"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -428,17 +430,18 @@
       <button class="small danger" onclick="resetRestTimer()">Reiniciar</button>
     </div>
   </div>
-<script>
+
+  <script>
     // =========================================================================
     // 1. CONFIGURACIÓN DE NUBE (LISTA PARA ENLAZAR) + RESPALDO LOCAL
     // =========================================================================
     const STORAGE_KEY = "silhouette_coach_state_v1";
     const SESSION_KEY = "silhouette_coach_session_v1";
 
-    // Coloca aquí tu endpoint de nube cuando lo tengas listo (ej. Google Apps Script / Firebase / REST)
+    // Endpoint de nube (Google Apps Script / Firebase / REST)
     const CLOUD_CONFIG = {
-      enabled: false, // Cambiar a true cuando conectes tu URL en la nube
-      endpointUrl: "https://script.google.com/macros/s/AKfycbzS1OnRQYkejya_e8fMUE02wDW1bKImaoDW5-QsVUHYQr-Trt57aGibwNjGAHFkWmUA/exec"
+      enabled: true,
+      endpointUrl: "https://script.google.com/macros/s/AKfycbzS1OnRQYkejya_e8fMUE02wDW1bKImaoDW5-QsVUHYQr-Trt57aGibwNjGAHFkWmUA/exec",
       apiKey: "",
       syncIntervalMs: 12000 // Revisa cambios cada 12 segundos cuando está en línea
     };
@@ -569,7 +572,7 @@
         const res = await fetch(CLOUD_CONFIG.endpointUrl, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "text/plain;charset=utf-8",
             ...(CLOUD_CONFIG.apiKey ? { "x-api-key": CLOUD_CONFIG.apiKey } : {})
           },
           body: JSON.stringify({ action: "saveState", payload: appState })
